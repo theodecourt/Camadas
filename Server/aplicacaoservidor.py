@@ -44,15 +44,14 @@ def main():
         #seus dados a serem transmitidos são um array bytes a serem transmitidos. Gere esta lista com o 
         #nome de txBuffer. Esla sempre irá armazenar os dados a serem enviados.
 
-        imageR = "./imgs/image.jpg"
-        imageW = "./imgs/recebidaCopia.jpg"
+        comando='00000000'+'01010101'
 
-        print("Carregando imagem para transmissao:")
-        print(" - {}".format(imageR))
+        print("Carregando comandos para transmissao:")
+        print("esta mandando o seguinte comando{}".format(comando))
         print("----------------------")
         
         #txBuffer = imagem em bytes!
-        txBuffer = open(imageR, 'rb').read()  #isso é um array de bytes
+        txBuffer = comando  #isso é um array de bytes
        
         print("meu array de bytes tem tamanho {}" .format(len(txBuffer)))
         #faça aqui uma conferência do tamanho do seu txBuffer, ou seja, quantos bytes serão enviados.
@@ -70,26 +69,6 @@ def main():
         # O método não deve estar funcionando quando usado como abaixo. deve estar retornando zero. Tente entender como esse método funciona e faça-o funcionar.
         txSize = com1.tx.getStatus()
         print('enviou = {}' .format(txSize))
-        
-        #Agora vamos iniciar a recepção dos dados. Se algo chegou ao RX, deve estar automaticamente guardado
-        #Observe o que faz a rotina dentro do thread RX
-        #print um aviso de que a recepção vai começar.
-
-        #Será que todos os bytes enviados estão realmente guardadas? Será que conseguimos verificar?
-        #Veja o que faz a funcao do enlaceRX  getBufferLen
-      
-        #acesso aos bytes recebidos
-        txLen = len(txBuffer)
-        rxBuffer, nRx = com1.getData(txLen)
-        print("recebeu {} bytes" .format(len(rxBuffer)))
-        
-        # for i in range(len(rxBuffer)):
-        #     print("recebeu {}" .format(rxBuffer[i]))
-        
-        print("Salvando dados no arquivo:")
-        print(" - {}".format(imageW))
-        f = open(imageW, 'wb')
-        f.write(rxBuffer)
         
     
         # Encerra comunicação
