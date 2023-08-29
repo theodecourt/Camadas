@@ -57,18 +57,45 @@ def main():
 
         rxBuffer = com1.rx.getAllBuffer(com1.rx.getBufferLen())
         print("recebeu {} bytes" .format(len(rxBuffer)))
-
-        def separandoComandos(comando):
-            listabytes=[]
-            for i in range(len(comando)):
-                listabytes.append(i)
-
-
-        
-        print("Salvando dados no arquivo:")
-        print(rxBuffer)
-        
     
+
+        
+        # print("Salvando dados no arquivo:")
+        # print(rxBuffer)
+
+        decimal_values = []
+        for byte in rxBuffer:
+            decimal_values.append(byte)
+
+        # print("Valores decimais individuais:", decimal_values)
+
+        comandos = []
+        comando = []
+
+        contador = 0
+        for i in decimal_values:
+            if contador == 0:
+                contador = i
+                if len(comando) != 0:
+                    comandos.append(comando)
+                comando = []
+
+            else:
+                comando.append(i)
+                contador -= 1
+            
+        comandos.append(comando)   
+
+        # Enviando de volta o numero de comandos
+
+        retorna_Ncomandos = bytearray([len(comandos)])
+        com1.sendData(np.asarray(retorna_Ncomandos))
+        
+        #Printando comandos linha por linha
+
+        for i in comandos:
+            print(i)
+
         # Encerra comunicação
         print("-------------------------")
         print("Comunicação encerrada")
