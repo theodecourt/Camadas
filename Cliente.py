@@ -68,7 +68,6 @@ def main():
         for i in comando:
             for t in i:
                 listaTodos.append(t)
-        
         byte_array0 = bytearray(listaTodos)
 
         
@@ -95,9 +94,24 @@ def main():
         # A camada enlace possui uma camada inferior, TX possui um método para conhecermos o status da transmissão
         # O método não deve estar funcionando quando usado como abaixo. deve estar retornando zero. Tente entender como esse método funciona e faça-o funcionar.
         txSize = com1.tx.getStatus()
-        print('enviou = {}' .format(txSize))
         
-    
+        # RECEBE NUMERO DE COMANDOS QUE ELE RECEBEU
+        print("esperadno resposta")
+        #inicia time out
+        start_time = time.time()
+        while com1.rx.getIsEmpty():
+            time.sleep(0.1)
+            if time.time() - start_time > 5:
+                print('time out')
+                break
+        nComandosRecebidos=com1.rx.getAllBuffer(com1.rx.getBufferLen())
+        nComandosRecebidos = list(nComandosRecebidos)      
+        if numerocomandos==nComandosRecebidos[0]:
+            print(f'numero de comandos era {numerocomandos} e recebi {nComandosRecebidos[0]}')
+        else:
+            print("Deu erro na transmissão de comandos")
+
+        
         # Encerra comunicação
         print("-------------------------")
         print("Comunicação encerrada")
